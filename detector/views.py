@@ -21,8 +21,8 @@ read the files one by one a
 #
 # dansk_file = os.path.join(BASE_DIR,"data/dansk.txt")
 # deutsch_file = os.path.join(BASE_DIR,"data/deutsch.txt")
-english_file = os.path.join(BASE_DIR,"data/english3.txt")
-espanol_file = os.path.join(BASE_DIR,"data/espanol.txt")
+# english_file = os.path.join(BASE_DIR,"data/english3.txt")
+# espanol_file = os.path.join(BASE_DIR,"data/espanol.txt")
 # francais_file = os.path.join(BASE_DIR,"data/francais.txt")
 # italiano_file = os.path.join(BASE_DIR,"data/italiano.txt")
 # nederlands_file = os.path.join(BASE_DIR,"data/nederlands3.txt")
@@ -34,11 +34,6 @@ espanol_file = os.path.join(BASE_DIR,"data/espanol.txt")
 First I will have a hardcoded text/s that will be processed and send the result as a Json response
 '''
 
-english_dawg = dawg.DAWG(codecs.openend(english_file, "r", "utf-8").read().split("\n"))
-espanol_dawg = dawg.DAWG(codecs.open(espanol_file, "r", "utf-8").read().split("\n"))
-
-text_english = """This is a test text predominantly written in english but has algo de spanish en el"""
-text_spanish = """Esto es un texto de prueba predominantemente escrito en inglés pero tiene some english in it"""
 
 
 @api_view(['GET'])
@@ -49,25 +44,25 @@ def get_response(request):
     english_file = os.path.join(BASE_DIR,"data/english3.txt")
     espanol_file = os.path.join(BASE_DIR,"data/espanol.txt")
 
-    english_dawg = dawg.DAWG(codecs.openend(english_file, "r", "utf-8").read().split("\n"))
-    espanol_dawg = dawg.DAWG(codecs.open(espanol_file, "r", "utf-8").read().split("\n"))
+    english_dawg = dawg.DAWG(codecs.open(english_file, "r", "ISO-8859-1").read().split("\n")[0:193000])
+    espanol_dawg = dawg.DAWG(codecs.open(espanol_file, "r", "ISO-8859-1").read().split("\n")[0:170000])
 
     text_english = """This is a test text predominantly written in english but has algo de spanish en el"""
     text_spanish = """Esto es un texto de prueba predominantemente escrito en inglés pero tiene some english in it"""
 
     if request.method == 'GET':
-        data = process_text(english_text)
+        data = process_text(text_english, english_dawg, espanol_dawg)
 
     return Response(data, status=status.HTTP_200_OK)
 
-def process_text(text):
+def process_text(text, english_dawg, spanish_dawg):
     text_words = get_text_words(text)
     number_of_english_words = count_occurances_dawg(text_words, english_dawg)
     number_of_spanish_words = count_occurances_dawg(text_words, spanish_dawg)
 
     if number_of_english_words > number_of_spanish_words:
         return "{ 'language': 'The predominant language is english' }"
-    else
+    else:
         return "{ 'language': 'The predominant language is spanish' }"
 
 def count_occurances_dawg(words, language_dawg):
