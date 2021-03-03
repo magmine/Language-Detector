@@ -6,6 +6,30 @@ __pycache__/
 # C extensions
 *.so
 
+# React stuff
+/frontend/node_modules
+
+frontend/.pnp
+.pnp.js
+
+# testing
+frontend/coverage
+
+# production
+/frontend/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
 # Distribution / packaging
 .Python
 build/
@@ -60,6 +84,7 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+/migration
 
 # Flask stuff:
 instance/
