@@ -51,19 +51,24 @@ def get_response(request):
     text_spanish = """Esto es un texto de prueba predominantemente escrito en inglés pero tiene some english in it"""
 
     if request.method == 'GET':
-        data = process_text(text_english, english_dawg, espanol_dawg)
-
+        data = process_text(text_spanish, english_dawg, espanol_dawg)
+    data['text'] = text_spanish
     return Response(data, status=status.HTTP_200_OK)
 
 def process_text(text, english_dawg, spanish_dawg):
     text_words = get_text_words(text)
+    result = {}
     number_of_english_words = count_occurances_dawg(text_words, english_dawg)
     number_of_spanish_words = count_occurances_dawg(text_words, spanish_dawg)
 
+    result['english_words'] = number_of_english_words
+    result['spanish_words'] = number_of_spanish_words
     if number_of_english_words > number_of_spanish_words:
-        return "{ 'language': 'The predominant language is english' }"
+        result['language'] = "The predominant language is english"
     else:
-        return "{ 'language': 'The predominant language is spanish' }"
+        result['language'] = "The predominant language is spanish"
+    return result
+
 
 def count_occurances_dawg(words, language_dawg):
     counter = 0
