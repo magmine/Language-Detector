@@ -36,7 +36,7 @@ First I will have a hardcoded text/s that will be processed and send the result 
 
 
 
-@api_view(['GET'])
+@api_view(['POST', 'GET'])
 @csrf_exempt
 def get_response(request):
     data = {}
@@ -50,9 +50,16 @@ def get_response(request):
     text_english = """This is a test text predominantly written in english but has algo de spanish en el"""
     text_spanish = """Esto es un texto de prueba predominantemente escrito en inglés pero tiene some english in it"""
 
+    if request.method == 'POST':
+        print(request.data)
+        request_data = {'text': request.data.get('text')}
+        data = process_text(request_data['text'], english_dawg, espanol_dawg)
+        data['text'] = request_data['text']
+
     if request.method == 'GET':
         data = process_text(text_spanish, english_dawg, espanol_dawg)
-    data['text'] = text_spanish
+        data['text'] = text_spanish
+    print(data)
     return Response(data, status=status.HTTP_200_OK)
 
 def process_text(text, english_dawg, spanish_dawg):

@@ -2,11 +2,8 @@ import React from 'react';
 import logo from '../img/logo.png';
 import axios from 'axios';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
+import { TextareaAutosize } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import PersonIcon from '@material-ui/icons/Person';
 import { Button } from '@material-ui/core';
 import '../App.css';
 import DataTable from "react-data-table-component";
@@ -89,19 +86,31 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
-  const [sanityData, setSanityData] = React.useState([]);
-  const [sanityCols, setSanityCols] = React.useState([]);
+  const [inputText, setInputText] = React.useState("");
+  // const [result, setResult] = React.useState({});
+  const [cols, setCols] = React.useState([]);
+  const [data, setData] = React.useState([]);
 
 
+  const handleTextChange = ({target}) => {
+    setInputText(target.value)
+  }
 
-  const handleVisualize = () => {
-    axios.get('http://localhost:8000/api/get_sanity_check/')
+  const handleClick = () => {
+    console.log("-----> " + inputText)
+    axios.post('http://localhost:8000/api/get_result/', {
+      headers: {'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      text: inputText
+    })
       .then(function (response) {
+        console.log("response ----> " + response.data)
         const columns = Object.keys(response.data[0]).map((c) => ({
           name: c,
           selector: c,
-          sortable: true,
         }));
+        console.log("columns ----> " + columns)
 
         const values = []
         console.log(response.data)
@@ -109,9 +118,10 @@ export default function Header() {
           values.push(response.data[i])
           console.log(response.data[i])
         }
+        console.log("values ----> " +values)
 
-        setSanityCols(columns)
-        setSanityData(values)
+        setCols(columns)
+        setData(values)
         
       })
       .catch(function (error) {
@@ -122,29 +132,32 @@ export default function Header() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static" style={{ background: '#fff', color: ' #25465f' }}>
-        <Toolbar>
-            <img src={logo} width="10%" className={logo}/>
-          <Typography className={classes.title} variant="h6" noWrap>
-            SANITY CHECK
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <PersonIcon />
-            </div>
-          </div>
 
-          <div>
-            <Button style={{ background: "#25465f", color:"#fff"}} variant="contained" onClick={handleVisualize}>Visualizer</Button>
-          </div>    
-          <div className={classes.grow} />
-        </Toolbar>
-      </AppBar>
-
-      <Container id="contentSanityCheck">
-        <h3></h3>
-        <DataTable pagination highlightOnHover columns={sanityCols} data={sanityData} />
-      </Container>
+      <center><h1>Language Detector</h1></center>
+      <center><Container id="inputForm">
+        <TextareaAutosize
+          name="textArea"
+          rowsMax={20}
+          rowsMin={10}
+          aria-label="maximum height"
+          placeholder="Write your text here"
+          value={inputText}
+          onChange={handleTextChange}
+        />
+      </Container></center>
+      <center>
+        <Button style={{ background: "#25465f", color:"#fff"}} onClick={handleClick} >Check language</Button>
+      </center>
+      <center>
+        <h3><p>-------------------------------------------------------------------</p></h3>
+        <h2>Results</h2>
+        <Container>
+          <DataTable
+            columns={cols}
+            data={data}
+          />
+        </Container>
+      </center>
     </div>
   );
 }

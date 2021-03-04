@@ -25,7 +25,7 @@ SECRET_KEY = 'bu7#q@0aj+oery+1rt1%sx_i_3$w@asj%)d0w=+m!5071jlbmz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'detector',
+    'corsheaders',
     'rest_framework',
 ]
 
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'language_detector.urls'
@@ -120,3 +122,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ORIGIN_WHITELIST = (
+#    'http://localhost:3000',
+# )
+
+# CORS_ORIGIN_ALLOW_ALL = False
+
+# CORS_ORIGIN_WHITELIST = (
+#     'http://127.0.0.1:3000',
+# )
+
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://127.0.0.1:3000',
+# ]
+
+# CORS_ALLOW_CREDENTIALS = True
