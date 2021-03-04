@@ -105,18 +105,32 @@ export default function Header() {
       text: inputText
     })
       .then(function (response) {
-        console.log("response ----> " + response.data)
-        const columns = Object.keys(response.data[0]).map((c) => ({
-          name: c,
-          selector: c,
-        }));
-        console.log("columns ----> " + columns)
+        const columns = []
+        console.log(Object.keys(response.data))
+        for (let i = 0; i < Object.keys(response.data).length; i++) {
+          //console.log(Object.keys(response.data)[i])
+          const col_name = Object.keys(response.data)[i];
+          columns[i] = {'name': col_name, 'selector': col_name };
+        }
+
+        console.log(columns)
+        console.log(response.data['english_words'])
+        console.log(response.data['spanish_words'])
+        console.log(response.data['language'])
+        console.log(response.data['text'])
+
 
         const values = []
-        console.log(response.data)
+        // Object.keys(response.data).forEach(key => {values.push({
+        //   name: key,
+        //   value: response.data[key]
+        // });
+        //   console.log("=====> " + key + " " + response.data[key]);
+        // }
+        // );
         for (var i = 0; i < Object.keys(response.data).length; i++) {
-          values.push(response.data[i])
-          console.log(response.data[i])
+          values.push(response.data[Object.keys(response.data)[i]])
+          console.log(response.data[Object.keys(response.data)[i]])
         }
         console.log("values ----> " +values)
 
