@@ -114,10 +114,6 @@ export default function Header() {
         }
 
         console.log(columns)
-        console.log(response.data['english_words'])
-        console.log(response.data['spanish_words'])
-        console.log(response.data['language'])
-        console.log(response.data['text'])
 
 
         const values = []
@@ -128,10 +124,17 @@ export default function Header() {
         //   console.log("=====> " + key + " " + response.data[key]);
         // }
         // );
+        const res = {}
         for (var i = 0; i < Object.keys(response.data).length; i++) {
-          values.push(response.data[Object.keys(response.data)[i]])
-          console.log(response.data[Object.keys(response.data)[i]])
+          const obj_key = Object.keys(response.data)[i]
+          const obj_value = response.data[Object.keys(response.data)[i]]
+          res[obj_key] = obj_value;
+          console.log("key: " + obj_key)
+          console.log("value: " + obj_value)
+          //values.push({ key: obj_key, value: obj_value})
+          //console.log(response.data[Object.keys(response.data)[i]])
         }
+        values.push(res)
         console.log("values ----> " +values)
 
         setCols(columns)
