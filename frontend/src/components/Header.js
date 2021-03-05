@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../img/logo.png';
 import axios from 'axios';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { TextareaAutosize } from '@material-ui/core';
@@ -87,7 +86,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Header() {
   const classes = useStyles();
   const [inputText, setInputText] = React.useState("");
-  // const [result, setResult] = React.useState({});
   const [cols, setCols] = React.useState([]);
   const [data, setData] = React.useState([]);
 
@@ -108,34 +106,19 @@ export default function Header() {
         const columns = []
         console.log(Object.keys(response.data))
         for (let i = 0; i < Object.keys(response.data).length; i++) {
-          //console.log(Object.keys(response.data)[i])
           const col_name = Object.keys(response.data)[i];
           columns[i] = {'name': col_name, 'selector': col_name };
         }
 
-        console.log(columns)
-
 
         const values = []
-        // Object.keys(response.data).forEach(key => {values.push({
-        //   name: key,
-        //   value: response.data[key]
-        // });
-        //   console.log("=====> " + key + " " + response.data[key]);
-        // }
-        // );
         const res = {}
         for (var i = 0; i < Object.keys(response.data).length; i++) {
           const obj_key = Object.keys(response.data)[i]
           const obj_value = response.data[Object.keys(response.data)[i]]
           res[obj_key] = obj_value;
-          console.log("key: " + obj_key)
-          console.log("value: " + obj_value)
-          //values.push({ key: obj_key, value: obj_value})
-          //console.log(response.data[Object.keys(response.data)[i]])
         }
         values.push(res)
-        console.log("values ----> " +values)
 
         setCols(columns)
         setData(values)
