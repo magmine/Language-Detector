@@ -1,87 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { fade, makeStyles } from '@material-ui/core/styles';
 import { TextareaAutosize } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
-import '../App.css';
 import DataTable from "react-data-table-component";
-
-const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  divapp: {
-    color : '#25465f',
-    background : '#fff',
-  },
-  titleapp : {
-    textAlign: 'center', 
-    background: 'f9f9f9',
-  },
-  bggrey : {
-    backgroundColor: "#f8f8f !important",
-  }
-
-}));
+import '../App.css';
+import { useStyles } from './style';
 
 export default function Header() {
   const classes = useStyles();
@@ -95,7 +19,6 @@ export default function Header() {
   }
 
   const handleClick = () => {
-    console.log("-----> " + inputText)
     axios.post('http://localhost:8000/api/get_result/', {
       headers: {'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
@@ -104,10 +27,8 @@ export default function Header() {
     })
       .then(function (response) {
         const columns = []
-        console.log(Object.keys(response.data))
-        for (let i = 0; i < Object.keys(response.data).length; i++) {
-          const col_name = Object.keys(response.data)[i];
-          columns[i] = {'name': col_name, 'selector': col_name };
+        for (let val in response.data) {
+          columns.push({'name': val, 'selector': val });
         }
 
 
