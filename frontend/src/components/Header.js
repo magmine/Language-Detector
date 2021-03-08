@@ -31,19 +31,13 @@ export default function Header() {
           columns.push({'name': val, 'selector': val });
         }
 
-
-        const values = []
-        const res = {}
-        for (var i = 0; i < Object.keys(response.data).length; i++) {
-          const obj_key = Object.keys(response.data)[i]
-          const obj_value = response.data[Object.keys(response.data)[i]]
-          res[obj_key] = obj_value;
+        const values = {};
+        for (let data_elem in response.data) {
+          values[data_elem] = response.data[data_elem];
         }
-        values.push(res)
 
-        setCols(columns)
-        setData(values)
-        
+        setCols(columns);
+        setData([values]);
       })
       .catch(function (error) {
         console.log(error);
