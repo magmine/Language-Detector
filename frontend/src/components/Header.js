@@ -19,7 +19,7 @@ export default function Header() {
   }
 
   const handleClick = () => {
-    axios.post('http://localhost:8000/api/get_result/', {
+    axios.post('http://localhost:8000/api/get_response/', {
       headers: {'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
