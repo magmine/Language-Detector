@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import *
+from .views import LanguageResult
 
 urlpatterns = [
-    path("get_result/", get_response),
+    path("get_response/", LanguageResult.as_view()),
 ]
