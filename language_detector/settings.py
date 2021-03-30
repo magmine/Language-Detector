@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import django_heroku
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'bu7#q@0aj+oery+1rt1%sx_i_3$w@asj%)d0w=+m!5071jlbmz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -120,22 +122,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "data"),
+]
 STATIC_URL = '/static/'
 CORS_ALLOW_ALL_ORIGINS = True
 
-# CORS_ORIGIN_WHITELIST = (
-#    'http://localhost:3000',
-# )
-
-# CORS_ORIGIN_ALLOW_ALL = False
-
-# CORS_ORIGIN_WHITELIST = (
-#     'http://127.0.0.1:3000',
-# )
-
-# CSRF_TRUSTED_ORIGINS = [
-#     'http://127.0.0.1:3000',
-# ]
-
-# CORS_ALLOW_CREDENTIALS = True
+django_heroku.settings(locals())

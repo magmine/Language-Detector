@@ -7,6 +7,9 @@ import DataTable from "react-data-table-component";
 import '../App.css';
 import { useStyles } from './style';
 
+// axios.defaults.xsrfCookieName = 'csrftoken'
+// axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 export default function Header() {
   const classes = useStyles();
   const [inputText, setInputText] = React.useState("");
@@ -19,7 +22,7 @@ export default function Header() {
   }
 
   const handleClick = () => {
-    axios.post('http://localhost:8000/api/get_response/', {
+    axios.post('/api/get_response/', {
       headers: {'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },

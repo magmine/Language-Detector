@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from language_detector.settings import BASE_DIR
+from language_detector.settings import BASE_DIR, STATIC_ROOT
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import os
@@ -9,24 +9,35 @@ import codecs
 import dawg
 import re
 
-
-language_files = {
-    'danish': os.path.join(BASE_DIR,"data/dansk.txt"),
-    'german': os.path.join(BASE_DIR,"data/deutsch.txt"),
-    'english': os.path.join(BASE_DIR,"data/english3.txt"),
-    'spanish': os.path.join(BASE_DIR,"data/espanol.txt"),
-    'frensh': os.path.join(BASE_DIR,"data/francais.txt"),
-    'italian': os.path.join(BASE_DIR,"data/italiano.txt"),
-    'dutch': os.path.join(BASE_DIR,"data/nederlands3.txt"),
-    'norsk': os.path.join(BASE_DIR,"data/norsk.txt"),
-    'swiss': os.path.join(BASE_DIR,"data/swiss.txt")
+language_files= {
+    'danish':  os.path.join(STATIC_ROOT, 'dansk.txt'),
+    'german':  os.path.join(STATIC_ROOT, "deutsch.txt"),
+    'english': os.path.join(STATIC_ROOT, "english3.txt"),
+    'spanish': os.path.join(STATIC_ROOT, "espanol.txt"),
+    'frensh':  os.path.join(STATIC_ROOT, "francais.txt"),
+    'italian': os.path.join(STATIC_ROOT, "italiano.txt"),
+    'dutch':   os.path.join(STATIC_ROOT, "nederlands3.txt"),
+    'norsk':   os.path.join(STATIC_ROOT, "norsk.txt"),
+    'swiss':   os.path.join(STATIC_ROOT, "swiss.txt")    
 }
+
+# language_files = {
+#     'danish': os.path.join(BASE_DIR,"data/dansk.txt"),
+#     'german': os.path.join(BASE_DIR,"data/deutsch.txt"),
+#     'english': os.path.join(BASE_DIR,"data/english3.txt"),
+#     'spanish': os.path.join(BASE_DIR,"data/espanol.txt"),
+#     'frensh': os.path.join(BASE_DIR,"data/francais.txt"),
+#     'italian': os.path.join(BASE_DIR,"data/italiano.txt"),
+#     'dutch': os.path.join(BASE_DIR,"data/nederlands3.txt"),
+#     'norsk': os.path.join(BASE_DIR,"data/norsk.txt"),
+#     'swiss': os.path.join(BASE_DIR,"data/swiss.txt")
+# }
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LanguageResult(APIView):
     def __init__(self):
         self.text : Text = None
-        # self.text_english = """This is a test text predominantly written in english but has algo de spanish en el"""
+        # self.text_english = """This is a text predominantly written in english but has algo de spanish en el"""
         # self.text_spanish = """Esto es un texto de prueba predominantemente escrito en inglés pero tiene some english in it"""
 
     def post(self, request, format=None):
@@ -34,8 +45,9 @@ class LanguageResult(APIView):
         input_text = request_data['text']
         self.text = Text(input_text)
         stats = self.text.get_language_stats()
-        stats['text'] = input_text
         return Response(stats, status=status.HTTP_200_OK) # Response returns a list
+    def get(self, request, format=None):
+        return Response({'text' : "Hey there"}, status=status.HTTP_200_OK)
 
 class Text:
     
