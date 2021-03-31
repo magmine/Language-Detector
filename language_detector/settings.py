@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'language_detector.urls'
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'language_detector.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,8 +125,11 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "data"),
+    os.path.join(BASE_DIR, "build"),
 ]
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 django_heroku.settings(locals())
