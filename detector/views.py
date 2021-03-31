@@ -33,6 +33,12 @@ language_files= {
 #     'swiss': os.path.join(BASE_DIR,"data/swiss.txt")
 # }
 
+from django.views.generic import TemplateView
+from django.views.decorators.cache import never_cache
+
+# Serve Single Page Application
+index = never_cache(TemplateView.as_view(template_name='index.html'))
+
 @method_decorator(csrf_exempt, name='dispatch')
 class LanguageResult(APIView):
     def __init__(self):
@@ -45,7 +51,7 @@ class LanguageResult(APIView):
         input_text = request_data['text']
         self.text = Text(input_text)
         stats = self.text.get_language_stats()
-        return Response(stats, status=status.HTTP_200_OK) # Response returns a list
+        return Response(stats, status=status.HTTP_200_OK, ) # Response returns a list
     def get(self, request, format=None):
         return Response({'text' : "Hey there"}, status=status.HTTP_200_OK)
 
