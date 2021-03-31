@@ -1,1 +1,1 @@
-web: gunicorn language_detector.wsgi
+web: gunicorn language_detector.wsgi --log-file -
