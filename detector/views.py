@@ -37,7 +37,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 
 # Serve Single Page Application
-index = never_cache(TemplateView.as_view(template_name='/staticfiles/index.html'))
+index = never_cache(TemplateView.as_view(template_name='staticfiles/index.html'))
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LanguageResult(APIView):
